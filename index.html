@@ -107,33 +107,31 @@
             }
         }
 
-        function zarSalla() {
-            // Sesi çal
-            sesCikar();
+       function sesCikar() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
 
-            const zarGövde = document.getElementById('zar');
-            const tumNoktalar = document.querySelectorAll('.nokta');
-            
-            // Dönme efekti
-            zarGövde.style.transform = "rotate(360deg) scale(1.1)";
-            
-            // Temizle
-            tumNoktalar.forEach(n => n.classList.remove('aktif'));
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
 
-            setTimeout(() => {
-                const sonuc = Math.floor(Math.random() * 6) + 1;
+                oscillator.type = 'square';
+                // Frekansları düşürdüm; bu sesi daha "bas" ve "tok" yapacaktır.
+                oscillator.frequency.setValueAtTime(80, audioCtx.currentTime); 
+                oscillator.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.15);
                 
-                // Noktaları yerleştir
-                zarHaritasi[sonuc].forEach(noktaId => {
-                    const nokta = document.getElementById('n' + noktaId);
-                    if(nokta) nokta.classList.add('aktif');
-                });
+                gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime); // Ses seviyesini biraz artırdım
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
 
-                zarGövde.style.transform = "rotate(0deg) scale(1)";
-            }, 200);
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + 0.15);
+            } catch (e) {
+                console.log("Ses çalınamadı.");
+            }
         }
-
         window.onload = zarSalla;
     </script>
 </body>
 </html>
+
