@@ -106,6 +106,29 @@
                 zarGövde.style.transform = "rotate(0deg) scale(1)";
             }, 200);
         }
+        function zarAt() {
+    // Ses oluşturma kısmı
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+
+    oscillator.type = 'square'; // Zarın masaya çarpma sesi gibi biraz mekanik bir ses
+    oscillator.frequency.setValueAtTime(150, audioCtx.currentTime); // Bas ses
+    oscillator.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.1); // Sesi incelt/kapat
+    
+    gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+
+    oscillator.start();
+    oscillator.stop(audioCtx.currentTime + 0.1);
+
+    // Mevcut zar atma mantığın buraya gelecek
+    const zar = Math.floor(Math.random() * 6) + 1;
+    document.getElementById('zarSonuc').innerText = zar;
+}
 
         // Sayfa açıldığında bir kez salla
         window.onload = zarSalla;
@@ -113,3 +136,4 @@
 </body>
 
 </html>
+
