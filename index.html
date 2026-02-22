@@ -84,28 +84,6 @@
             5: [1, 3, 5, 7, 9],
             6: [1, 3, 4, 6, 7, 9]
         };
-
-        function zarSalla() {
-            const zarGövde = document.getElementById('zar');
-            const tumNoktalar = document.querySelectorAll('.nokta');
-            
-            // Dönme efekti
-            zarGövde.style.transform = "rotate(360deg) scale(1.1)";
-            
-            // Tüm noktaları önce bir temizleyelim
-            tumNoktalar.forEach(n => n.classList.remove('aktif'));
-
-            setTimeout(() => {
-                const sonuc = Math.floor(Math.random() * 6) + 1;
-                
-                // Gelen sayıya göre ilgili noktaları görünür yap
-                zarHaritasi[sonuc].forEach(noktaId => {
-                    document.getElementById('n' + noktaId).classList.add('aktif');
-                });
-
-                zarGövde.style.transform = "rotate(0deg) scale(1)";
-            }, 200);
-        }
         function zarAt() {
     // Ses oluşturma kısmı
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -129,6 +107,27 @@
     const zar = Math.floor(Math.random() * 6) + 1;
     document.getElementById('zarSonuc').innerText = zar;
 }
+        function zarSalla() {
+            const zarGövde = document.getElementById('zar');
+            const tumNoktalar = document.querySelectorAll('.nokta');
+            
+            // Dönme efekti
+            zarGövde.style.transform = "rotate(360deg) scale(1.1)";
+            
+            // Tüm noktaları önce bir temizleyelim
+            tumNoktalar.forEach(n => n.classList.remove('aktif'));
+
+            setTimeout(() => {
+                const sonuc = Math.floor(Math.random() * 6) + 1;
+                
+                // Gelen sayıya göre ilgili noktaları görünür yap
+                zarHaritasi[sonuc].forEach(noktaId => {
+                    document.getElementById('n' + noktaId).classList.add('aktif');
+                });
+
+                zarGövde.style.transform = "rotate(0deg) scale(1)";
+            }, 200);
+        }
 
         // Sayfa açıldığında bir kez salla
         window.onload = zarSalla;
@@ -136,5 +135,6 @@
 </body>
 
 </html>
+
 
 
